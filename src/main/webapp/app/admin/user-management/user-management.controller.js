@@ -5,9 +5,9 @@
         .module('sampleProjectApp')
         .controller('UserManagementController', UserManagementController);
 
-    UserManagementController.$inject = ['Principal', 'User', 'ParseLinks', 'paginationConstants'];
+    UserManagementController.$inject = ['$http', 'Principal', 'User', 'ParseLinks', 'paginationConstants'];
 
-    function UserManagementController(Principal, User, ParseLinks, paginationConstants) {
+    function UserManagementController($http, Principal, User, ParseLinks, paginationConstants) {
         var vm = this;
 
         vm.authorities = ['ROLE_USER', 'ROLE_ADMIN'];

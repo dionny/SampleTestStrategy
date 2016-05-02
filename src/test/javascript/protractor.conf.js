@@ -9,9 +9,10 @@ exports.config = {
     allScriptsTimeout: 20000,
 
     suites: {
-        account: './e2e/account/*.js',
-        admin: './e2e/admin/*.js',
-        entity: './e2e/entities/*.js'
+        account: ['./e2e/account/*.js'],
+        admin: ['./e2e/admin/*.js'],
+        entity: ['./e2e/entities/*.js'],
+        component: ['./component/*.js']
     },
 
     capabilities: {
@@ -31,7 +32,16 @@ exports.config = {
         defaultTimeoutInterval: 30000
     },
 
+    mocks: {
+        dir: 'mocks'
+    },
+
     onPrepare: function() {
+        require('protractor-http-mock').config = {
+            rootDirectory: __dirname,
+            protractorConfig: 'protractor.conf.js' // default value: 'protractor-conf.js'
+        };
+
         // Disable animations so e2e tests run more quickly
         var disableNgAnimate = function() {
             angular
