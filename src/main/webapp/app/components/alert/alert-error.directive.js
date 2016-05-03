@@ -67,7 +67,6 @@
                     break;
 
                 default:
-                    debugger;
                     if (httpResponse.data && httpResponse.data.message) {
                         addErrorAlert(httpResponse.data.message);
                     } else {
