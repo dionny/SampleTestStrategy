@@ -1,65 +1,81 @@
 var mock = require('protractor-http-mock');
+var mocks = require('../component/userMocks');
 var menu = require('../e2e/pages/menu');
-var username = element(by.id('username'));
-var password = element(by.id('password'));
+var login = require('../e2e/pages/loginDialog');
+var userAdmin = require('../e2e/pages/userAdmin');
+var userDialog = require('../e2e/pages/userDetailsDialog');
+var EC = protractor.ExpectedConditions;
 
-var mocks =
-    [
-        {
-            request: {
-                path: 'api\\/users.*',
-                regex: true,
-                method: 'GET'
-            },
-            response: {
-                headers: {
-                    "link": "</api/users?page=0&size=20>; rel=\"last\",</api/users?page=0&size=20>; rel=\"first\"",
-                    "X-Total-Count": 1
-                },
-                data: [
-                    {
-                        "login": "system",
-                        "firstName": "",
-                        "lastName": "System",
-                        "email": "system@localhost",
-                        "activated": true,
-                        "langKey": "en",
-                        "authorities": ["ROLE_USER", "ROLE_ADMIN"],
-                        "id": "user-0",
-                        "createdDate": "2016-05-02T12:48:23.594Z",
-                        "lastModifiedBy": null,
-                        "lastModifiedDate": "2016-05-02T15:32:44.549Z",
-                        "password": null
-                    }
-                ]
-            }
-        }
-    ];
+describe('user management', function () {
 
-describe('requests made', function () {
-
-    beforeEach(function () {
-        mock(mocks);
+    beforeAll(function () {
+        mock([mocks.getUsers]);
         browser.get('/');
 
         menu.accountMenu.click();
         menu.login.click();
 
-        username.sendKeys('admin');
-        password.sendKeys('admin');
-        element(by.css('button[type=submit]')).click();
+        login.username.sendKeys('admin');
+        login.password.sendKeys('admin');
+        login.submit.click();
+    });
+
+    beforeEach(function () {
+        browser.ignoreSynchronization = false;
+        
+        menu.home.click();
+        menu.adminMenu.click();
+        menu.userManagement.click();
     });
 
     afterEach(function () {
+        mock.remove([mocks.createUserBadRequest, mocks.createUserInternalError]);
+    });
+
+    afterAll(function () {
         mock.teardown();
     });
 
-    it('should load user management', function () {
-        var adminMenu = element(by.id('admin-menu'));
-        adminMenu.click();
-        element(by.css('[ui-sref="user-management"]')).click();
+    it('should load users when viewing user management', function () {
+        expect(userAdmin.header.getText()).toMatch(/Users/);
+        expect(userAdmin.users.count()).toBe(1);
+        expect(userAdmin.users.row(0).id.getText()).toMatch(/user-0/);
+        expect(userAdmin.users.row(0).login.getText()).toMatch(/system/);
+        expect(userAdmin.users.row(0).email.getText()).toMatch(/system@localhost/);
+    });
 
-        expect(element.all(by.css('h2')).first().getText()).toMatch(/Users/);
+    it('should display error message on bad request', function () {
+        mock.add([mocks.createUserBadRequest]);
+
+        userAdmin.newUser.click();
+
+        userDialog.login.sendKeys('abc');
+        userDialog.firstName.sendKeys('abc');
+        userDialog.lastName.sendKeys('abc');
+        userDialog.email.sendKeys('abc@abc');
+        userDialog.save.click();
+
+        browser.ignoreSynchronization = true;
+        expect(userDialog.error.getText()).toMatch(/Unable to process the transaction./);
+
+        userDialog.cancel.click();
+    });
+
+    it('should display error message on internal error', function () {
+        mock.add([mocks.createUserInternalError]);
+
+        userAdmin.newUser.click();
+
+        userDialog.login.sendKeys('abc');
+        userDialog.firstName.sendKeys('abc');
+        userDialog.lastName.sendKeys('abc');
+        userDialog.email.sendKeys('abc@abc');
+        userDialog.save.click();
+
+        browser.ignoreSynchronization = true;
+        expect(userDialog.error.getText()).toMatch(/Unable to process the transaction./);
+
+        userDialog.cancel.click();
     });
 
 });

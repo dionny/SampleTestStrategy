@@ -1,6 +1,6 @@
 // 'use strict';
 //
-// xdescribe('administration', function () {
+// describe('administration', function () {
 //
 //     var username = element(by.id('username'));
 //     var password = element(by.id('password'));

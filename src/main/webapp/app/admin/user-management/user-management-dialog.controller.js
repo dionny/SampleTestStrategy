@@ -25,7 +25,7 @@
             $uibModalInstance.close(result);
         }
 
-        function onSaveError() {
+        function onSaveError(err) {
             vm.isSaving = false;
         }
 

@@ -2,7 +2,7 @@
 //
 // var menu = require('../pages/menu.js');
 //
-// xdescribe('account', function () {
+// describe('account', function () {
 //
 //     var username = element(by.id('username'));
 //     var password = element(by.id('password'));
