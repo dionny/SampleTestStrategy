@@ -4,7 +4,6 @@ var menu = require('../e2e/pages/menu');
 var login = require('../e2e/pages/loginDialog');
 var userAdmin = require('../e2e/pages/userAdmin');
 var userDialog = require('../e2e/pages/userDetailsDialog');
-var EC = protractor.ExpectedConditions;
 
 describe('user management', function () {
 
@@ -22,7 +21,7 @@ describe('user management', function () {
 
     beforeEach(function () {
         browser.ignoreSynchronization = false;
-        
+
         menu.home.click();
         menu.adminMenu.click();
         menu.userManagement.click();
@@ -42,6 +41,8 @@ describe('user management', function () {
         expect(userAdmin.users.row(0).id.getText()).toMatch(/user-0/);
         expect(userAdmin.users.row(0).login.getText()).toMatch(/system/);
         expect(userAdmin.users.row(0).email.getText()).toMatch(/system@localhost/);
+
+        browser.pause();
     });
 
     it('should display error message on bad request', function () {

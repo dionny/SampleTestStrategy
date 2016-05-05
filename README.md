@@ -78,10 +78,10 @@ This greatly simplifies data setup/teardown (since a clean DB is created on ever
 
 ## Testing Contributions (Work in Progress)
 
-Although JHipster's scaffold comes with a fair amount of tests, our main contributions involve (~~striked~~: not completed yet):
-* ~~For the User Administration feature, introduced test examples for every layer across the test pyramid~~
-* ~~Introduced page objects for both UI component and end-to-end tests~~
-* ~~Introduced [Angular Multimocks][] for mocking HTTP calls to backend (for component testing)~~
+Although JHipster's scaffold comes with a fair amount of tests, our main contributions involve:
+* For the User Administration feature, introduced test examples for several layers across the test pyramid
+* Introduced page objects for both UI component and end-to-end tests
+* Introduced [Protractor HTTP Mock][] for mocking HTTP calls to backend (for component testing)
 * Changed the package/directory structure to align with the proposed test strategy
 
 
@@ -96,6 +96,6 @@ Although JHipster's scaffold comes with a fair amount of tests, our main contrib
 [page objects]: http://www.protractortest.org/#/page-objects
 [Gradle]: http://gradle.org/
 [JUnit]: http://junit.org/junit4/
-[Angular Multimocks]: https://github.com/wongatech/angular-multimocks
+[Protractor HTTP Mock]: https://github.com/atecarlos/protractor-http-mock
 [embedded MongoDB]: https://github.com/flapdoodle-oss/de.flapdoodle.embed.mongo
 [Flapdoodle]: https://github.com/flapdoodle-oss
